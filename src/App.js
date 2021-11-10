@@ -1,23 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import DateTimePicker from 'react-datetime-picker';
 
 function App() {
+  const [list, setList] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [event, setEvent] = useState("");
+
+  const saveEvent = () => {
+    const obj = {
+      date,
+      event
+    }
+    const newList = [...list, obj];
+    setList(newList);
+    setDate(new Date());
+    setEvent("");
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="event">
+        <DateTimePicker
+          onChange={setDate}
+          value={date}
+        />
+        <input type="text" value={event} onChange={(e) => setEvent(e.target.value)} placeholder="Enter your event details" />
+        <button onClick={saveEvent}>Save Event</button>
+      </div>
+      <div className="list">
+        {list.map((obj) => {
+          return <div key={obj.date}> {obj.date.toString()} -------- {obj.event.toString()} </div>
+        })}
+
+      </div>
     </div>
   );
 }
